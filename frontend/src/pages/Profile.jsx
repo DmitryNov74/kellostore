@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useRef, useState, useEffect } from 'react';
 import {
   getDownloadURL,
@@ -7,16 +7,24 @@ import {
   uploadBytesResumable,
 } from 'firebase/storage';
 import { app } from '../firebase';
+import {
+  updateUserSuccess,
+  updateUserFailure,
+  deleteUserFailure,
+  deleteUserSuccess,
+  signoutUserFailure,
+  signoutUserSuccess,
+} from '../redux/user/userSlice';
 
 export default function Profile() {
   const fileRef = useRef(null);
   const [file, setFile] = useState(undefined);
   const [filePerc, setFilePerc] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
+  const [profileUpdated, setProfileUpdated] = useState(false);
   const [formData, setFormData] = useState({});
   const { currentUser } = useSelector((state) => state.user);
-  console.log(formData);
-  console.log(filePerc);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (file) {
@@ -47,10 +55,66 @@ export default function Profile() {
       }
     );
   };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(updateUserFailure(data.message));
+        return;
+      }
+      dispatch(updateUserSuccess(data));
+      setProfileUpdated(true);
+    } catch (error) {
+      dispatch(updateUserFailure(error.message));
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    try {
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      const res = await fetch('/api/auth/signout');
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(signoutUserFailure(data.message));
+        return;
+      }
+      dispatch(signoutUserSuccess(data));
+    } catch (error) {
+      next(error);
+    }
+  };
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl text-center mt-5">Profiili</h1>
-      <form className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
           type="file"
           ref={fileRef}
@@ -67,9 +131,9 @@ export default function Profile() {
               Error Image upload (image must be less than 2 mb)
             </span>
           ) : filePerc > 0 && filePerc < 100 ? (
-            <span className="text-slate-700">{`Uploading ${filePerc}%`}</span>
+            <span className="text-slate-700">{`Ladataan... ${filePerc}%`}</span>
           ) : filePerc === 100 ? (
-            <span className="text-green-700">Image successfully uploaded!</span>
+            <span className="text-green-700">Kuva on ladattu!</span>
           ) : (
             ''
           )}
@@ -79,26 +143,41 @@ export default function Profile() {
           type="text"
           placeholder="Käyttäjänimi"
           id="username"
+          defaultValue={currentUser.username}
+          onChange={handleChange}
         />
         <input
           className="border p-3"
           type="email"
           placeholder="Sähköposti"
           id="email"
+          defaultValue={currentUser.email}
+          onChange={handleChange}
         />
         <input
           className="border p-3"
           type="password"
           placeholder="Salasana"
           id="password"
+          onChange={handleChange}
         />
         <button className="bg-slate-400 rounded-md text-white p-3 hover:opacity-70">
           PÄIVITÄ PROFIILI
         </button>
       </form>
+      {profileUpdated && (
+        <p className="text-green-500">Tilisi on päivitetty!</p>
+      )}
       <div className="flex justify-between mt-2">
-        <span className="text-red-700 cursor-pointer">Poista Tili</span>
-        <span className="text-green-700 cursor-pointer">Kirjaudu Ulos</span>
+        <span
+          onClick={handleDeleteUser}
+          className="text-red-700 cursor-pointer"
+        >
+          Poista Tili
+        </span>
+        <span onClick={handleSignOut} className="text-green-700 cursor-pointer">
+          Kirjaudu Ulos
+        </span>
       </div>
     </div>
   );

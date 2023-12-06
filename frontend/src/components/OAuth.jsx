@@ -12,6 +12,7 @@ export default function OAuth() {
       const provider = new GoogleAuthProvider();
       const auth = getAuth(app);
       const result = await signInWithPopup(auth, provider);
+
       const res = await fetch('/api/auth/google', {
         method: 'POST',
         headers: {
@@ -23,11 +24,11 @@ export default function OAuth() {
           photo: result.user.photoURL,
         }),
       });
-      const data = res.json();
+      const data = await res.json();
       dispatch(signInSuccess(data));
       navigate('/');
     } catch (error) {
-      console.log(error);
+      console.log('ei voi kirjautua googlella', error);
     }
   };
   return (

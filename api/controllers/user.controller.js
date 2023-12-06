@@ -8,7 +8,7 @@ export const test = (req, res) => {
 
 export const updateUser = async (req, res, next) => {
   if (req.user.id !== req.params.id)
-    return next(errorHandler(401, 'Kirjausu sisään päivittämään tiliäsi.'));
+    return next(errorHandler(401, 'Kirjaudu sisään päivittämään tiliäsi.'));
   try {
     if (req.body.password) {
       req.body.password = bcryptjs.hashSync(req.body.password, 10);
@@ -30,5 +30,19 @@ export const updateUser = async (req, res, next) => {
     console.log(updatedUser._doc);
   } catch (error) {
     next(error);
+  }
+};
+
+export const deleteUser = async (req, res, next) => {
+  if (req.user.id !== req.params.id)
+    return next(
+      errorHandler(401, 'Sinulla ei ole oikeuksia poistaa tämän tilin')
+    );
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.clearCookie('access_token');
+    res.status(200).json('Käyttäjä poistettu!');
+  } catch (error) {
+    next(errorHandler(error));
   }
 };
