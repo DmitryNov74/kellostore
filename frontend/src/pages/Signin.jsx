@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInSuccess, signInFailure } from '../redux/user/userSlice';
+import OAuth from '../components/OAuth';
 
 export default function Signin() {
   const [formData, setFormData] = useState({});
@@ -59,6 +60,7 @@ export default function Signin() {
         <button className="bg-slate-400 rounded-md text-white p-3 hover:opacity-70">
           KIRJAUDU SISÄÄN
         </button>
+        <OAuth />
       </form>
       <div className="flex gap-2 mt-3">
         <p>Etkö vielä rekiströitynyt ? </p>
