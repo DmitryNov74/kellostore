@@ -21,6 +21,7 @@ export default function Profile() {
   const fileRef = useRef(null);
   const [file, setFile] = useState(undefined);
   const [filePerc, setFilePerc] = useState(0);
+  const [userListings, setUserListings] = useState([]);
   const [fileUploadError, setFileUploadError] = useState(false);
   const [profileUpdated, setProfileUpdated] = useState(false);
   const [formData, setFormData] = useState({});
@@ -112,6 +113,38 @@ export default function Profile() {
       next(error);
     }
   };
+
+  const handleShowListings = async () => {
+    try {
+      const res = await fetch(`/api/user/listings/${currentUser._id}`);
+      const data = await res.json();
+      if (data.success === false) {
+        return;
+      }
+      setUserListings(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleListingDelete = async (listingId) => {
+    try {
+      const res = await fetch(`/api/listing/delete/${listingId}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        console.log(data.message);
+        return;
+      }
+      setUserListings((prev) =>
+        prev.filter((listing) => listing._id !== listingId)
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl text-center mt-5">Profiili</h1>
@@ -186,6 +219,41 @@ export default function Profile() {
           Kirjaudu Ulos
         </span>
       </div>
+      <button onClick={handleShowListings} className="text-gray-600 w-full">
+        Kaikki kellot
+      </button>
+      {userListings &&
+        userListings.length > 0 &&
+        userListings.map((listing) => (
+          <div
+            key={listing._id}
+            className="border p-3 rounded-md flex justify-between items-center mt-5 gap-3"
+          >
+            <Link to={`/listing/${listing._id}`}>
+              <img
+                src={listing.imageUrls[0]}
+                className="w-10 h-10 rounded-lg"
+              />
+            </Link>
+            <Link
+              to={`/listing/${listing._id}`}
+              className="font-semibold truncate"
+            >
+              <p>{listing.name}</p>
+            </Link>
+            <div className="flex flex-col items-center">
+              <button
+                onClick={() => handleListingDelete(listing._id)}
+                className="text-red-800"
+              >
+                Poista
+              </button>
+              <Link to={`/update-listing/${listing._id}`}>
+                <button className="text-yellow-300">Muokkaa</button>
+              </Link>
+            </div>
+          </div>
+        ))}
     </div>
   );
 }
