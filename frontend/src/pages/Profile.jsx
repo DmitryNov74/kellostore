@@ -15,6 +15,7 @@ import {
   signoutUserFailure,
   signoutUserSuccess,
 } from '../redux/user/userSlice';
+import { Link } from 'react-router-dom';
 
 export default function Profile() {
   const fileRef = useRef(null);
@@ -164,6 +165,12 @@ export default function Profile() {
         <button className="bg-slate-400 rounded-md text-white p-3 hover:opacity-70">
           PÄIVITÄ PROFIILI
         </button>
+        <Link
+          className="bg-blue-400 text-white rounded-md p-3 text-center"
+          to={'/create-listing'}
+        >
+          LUO LUETTELO
+        </Link>
       </form>
       {profileUpdated && (
         <p className="text-green-500">Tilisi on päivitetty!</p>
