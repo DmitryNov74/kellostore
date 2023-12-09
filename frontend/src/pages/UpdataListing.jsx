@@ -229,6 +229,7 @@ export default function UpdateListing() {
                 min="1"
                 required
                 onChange={handleChange}
+                value={formData.price}
                 checked={formData.price}
               />
               <label>Hintapyyntö</label>
@@ -241,6 +242,7 @@ export default function UpdateListing() {
                 min="1"
                 required
                 onChange={handleChange}
+                value={formData.year}
                 checked={formData.year}
               />
               <label>Vuosimalli</label>

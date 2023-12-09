@@ -60,3 +60,15 @@ export const getUserListings = async (req, res, next) => {
     return next(errorHandler(404, 'Pääsy evätty'));
   }
 };
+
+export const getUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return next(errorHandler(404, 'Käyttäjä ei löytynyt'));
+
+    const { password: no, ...rest } = user._doc;
+    res.status(200).json(rest);
+  } catch (error) {
+    next(error);
+  }
+};
