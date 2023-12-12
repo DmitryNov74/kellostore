@@ -58,3 +58,34 @@ export const getListing = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getListings = async (req, res, next) => {
+  try {
+    const limit = parseInt(req.query.limit) || 9;
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    let isFullSet = req.query.isFullSet;
+    if (isFullSet === undefined || isFullSet === false) {
+      isFullSet = { $in: [false, true] };
+    }
+    let movement = req.query.movement;
+    if (
+      movement === undefined ||
+      movement === 'quartz' ||
+      movement === 'automatic'
+    ) {
+      movement = { $in: ['quartz', 'automatic'] };
+    }
+    const searchTerm = req.query.searchTerm || '';
+
+    const listings = await Listing.find({
+      name: { $regex: searchTerm, $options: 'i' },
+      isFullSet,
+      movement,
+    })
+      .limit(limit)
+      .skip(startIndex);
+    return res.status(200).json(listings);
+  } catch (error) {
+    next(error);
+  }
+};

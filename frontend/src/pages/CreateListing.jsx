@@ -27,7 +27,7 @@ export default function CreateListing() {
     price: 0,
     description: '',
   });
-  console.log(formData);
+
   const handleImageSubmit = (e) => {
     if (files.length > 0 && files.length + formData.imageUrls.length < 6) {
       const pictures = [];
