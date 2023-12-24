@@ -52,24 +52,17 @@ export default function Listing() {
         </div>
       )}
       <div className="flex flex-col max-w-2xl mx-auto p-3 my-2 gap-2">
-        <div className="flex flex-row gap-2 text-3xl">
-          <p>{watchListing?.name}</p>
+        <div className="flex flex-row gap-2 text-3xl text-slate-800">
+          <p>Brändi: {watchListing?.name}</p>
           <p>{watchListing?.modelOf}</p>
         </div>
-        <div className="flex flex-row gap-2 text-2xl">
-          <p>
-            <IoPricetagsOutline /> {watchListing?.price.toLocaleString('fi-FI')}{' '}
-            €
-          </p>
-          <p>Valmistuvuosi {watchListing?.year}</p>
-          <p>
-            <GiWatch /> {watchListing?.movement}
-          </p>
-          <p>Full Set {watchListing?.isFullSet}</p>
-          <p>
-            <FaMapMarkerAlt /> {watchListing?.locationOf}
-          </p>
-          <p>Kunto {watchListing?.condition}</p>
+        <div className="flex flex-col gap-2 text-2xl text-slate-700">
+          <p>Hinta: {watchListing?.price.toLocaleString('fi-FI')} €</p>
+          <p>Valmistuvuosi: {watchListing?.year}</p>
+          <p>Koneisto: {watchListing?.movement}</p>
+          <p>Full Set: {watchListing?.isFullSet}</p>
+          <p>Sijainti: {watchListing?.locationOf}</p>
+          <p>Kunto: {watchListing?.condition}</p>
         </div>
         <div>
           <p>{watchListing?.description}</p>

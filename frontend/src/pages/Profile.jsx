@@ -32,6 +32,7 @@ export default function Profile() {
     if (file) {
       handleFileUpload(file);
     }
+    handleShowListings();
   }, [file]);
 
   const handleFileUpload = (file) => {
@@ -202,26 +203,29 @@ export default function Profile() {
           className="bg-blue-400 text-white rounded-md p-3 text-center"
           to={'/create-listing'}
         >
-          LUO LUETTELO
+          LISÄÄ KELLO
         </Link>
       </form>
       {profileUpdated && (
         <p className="text-green-500">Tilisi on päivitetty!</p>
       )}
       <div className="flex justify-between mt-2">
-        <span
-          onClick={handleDeleteUser}
-          className="text-red-700 cursor-pointer"
-        >
-          Poista Tili
-        </span>
+        {userListings.length === 0 && (
+          <button
+            onClick={handleDeleteUser}
+            className="text-red-700 cursor-pointer"
+          >
+            Poista Tili
+          </button>
+        )}
+
         <span onClick={handleSignOut} className="text-green-700 cursor-pointer">
           Kirjaudu Ulos
         </span>
       </div>
-      <button onClick={handleShowListings} className="text-gray-600 w-full">
+      {/*  <button onClick={handleShowListings} className="text-gray-600 w-full">
         Kaikki kellot
-      </button>
+      </button> */}
       {userListings &&
         userListings.length > 0 &&
         userListings.map((listing) => (
@@ -239,7 +243,9 @@ export default function Profile() {
               to={`/listing/${listing._id}`}
               className="font-semibold truncate"
             >
-              <p>{listing.name}</p>
+              <p>
+                {listing.name} {listing.modelOf}
+              </p>
             </Link>
             <div className="flex flex-col items-center">
               <button
