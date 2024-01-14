@@ -60,7 +60,8 @@ export default function Listing() {
           <p>Hinta: {watchListing?.price.toLocaleString('fi-FI')} €</p>
           <p>Valmistuvuosi: {watchListing?.year}</p>
           <p>Koneisto: {watchListing?.movement}</p>
-          <p>Full Set: {watchListing?.isFullSet}</p>
+          <p>Full Set: {watchListing?.isFullSet ? 'Kyllä' : 'Ei'}</p>
+          {/* <p>Full Set: {watchListing?.isFullSet}</p> */}
           <p>Sijainti: {watchListing?.locationOf}</p>
           <p>Kunto: {watchListing?.condition}</p>
         </div>
