@@ -46,6 +46,7 @@ export default function Signup() {
           className="border p-3"
           id="username"
           onChange={handleChange}
+          required
         />
         <input
           type="email"
@@ -53,6 +54,7 @@ export default function Signup() {
           className="border p-3"
           id="email"
           onChange={handleChange}
+          required
         />
         <input
           type="password"

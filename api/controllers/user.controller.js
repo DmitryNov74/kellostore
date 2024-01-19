@@ -4,7 +4,7 @@ import User from '../models/user.model.js';
 import Listing from '../models/listing.model.js';
 
 export const test = (req, res) => {
-  res.json({ message: 'hello from...' });
+  res.json({ message: 'testi...' });
 };
 
 export const updateUser = async (req, res, next) => {
@@ -28,7 +28,7 @@ export const updateUser = async (req, res, next) => {
     );
     const { password, ...rest } = updatedUser._doc;
     res.status(200).json(rest);
-    console.log(updatedUser._doc);
+    //console.log(updatedUser._doc);
   } catch (error) {
     next(error);
   }

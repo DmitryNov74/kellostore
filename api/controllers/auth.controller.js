@@ -11,7 +11,7 @@ export const signup = async (req, res, next) => {
     await newUser.save();
     res.status(201).json('Käyttäjä on luotu');
   } catch (error) {
-    next(error);
+    next(errorHandler(404, 'Käyttäjä on olemassa'));
   }
 };
 
@@ -25,6 +25,7 @@ export const signin = async (req, res, next) => {
       return next(errorHandler(401, 'Väärä käyttäjänimi tai salasana'));
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
     const { password: no, ...rest } = validUser._doc;
+
     res
       .cookie('access_token', token, { httpOnly: true })
       .status(200)

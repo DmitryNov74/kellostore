@@ -36,6 +36,7 @@ export default function UpdateListing() {
       const data = await res.json();
       if (data.success === false) {
         console.log(data.message);
+        setError(data.message);
       }
       setFormData(data);
     };

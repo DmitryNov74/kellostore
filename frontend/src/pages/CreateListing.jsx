@@ -42,7 +42,7 @@ export default function CreateListing() {
         setImageUploadError(false);
       });
     } else {
-      setImageUploadError('Kuvia pitää olla vähintään 1 ja enintään 5');
+      setImageUploadError('Kuvia pitää olla vähintään 1 ja enintään 5 ');
     }
   };
 

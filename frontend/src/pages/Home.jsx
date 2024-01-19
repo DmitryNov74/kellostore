@@ -50,8 +50,8 @@ export default function Home() {
   return (
     <div>
       <div className="flex flex-col gap-3 p-20 px-3 max-w-6xl mx-auto">
-        <h1 className="text-slate-600 font-bold text-3xl">
-          jdjdjdjd jdjdjdd <span className="text-5xl">kdkdkdkd</span>kdkkdkkdkd
+        <h1 className="text-slate-600 font-bold text-3xl italic">
+          Osto <span className="text-5xl">Vaihto</span>Myytni
         </h1>
         <div>cnccnncncncncncncncnc</div>
       </div>

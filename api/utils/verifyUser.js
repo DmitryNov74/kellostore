@@ -12,5 +12,5 @@ export const verifyToken = (req, res, next) => {
 
     next();
   });
-  console.log(req.cookies);
+  //console.log(req.cookies);
 };

@@ -49,6 +49,7 @@ export default function Signin() {
           className="border p-3"
           id="email"
           onChange={handleChange}
+          required
         />
         <input
           type="password"
@@ -56,6 +57,7 @@ export default function Signin() {
           className="border p-3"
           id="password"
           onChange={handleChange}
+          required
         />
         <button className="bg-slate-400 rounded-md text-white p-3 hover:opacity-70">
           KIRJAUDU SISÄÄN

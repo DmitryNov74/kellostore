@@ -163,7 +163,7 @@ export default function Profile() {
         <p className="text-sm self-center">
           {fileUploadError ? (
             <span className="text-red-700">
-              Error Image upload (image must be less than 2 mb)
+              Virhe latauksessa (kuvan pitää olla enintään 2 mb)
             </span>
           ) : filePerc > 0 && filePerc < 100 ? (
             <span className="text-slate-700">{`Ladataan... ${filePerc}%`}</span>
@@ -223,9 +223,7 @@ export default function Profile() {
           Kirjaudu Ulos
         </span>
       </div>
-      {/*  <button onClick={handleShowListings} className="text-gray-600 w-full">
-        Kaikki kellot
-      </button> */}
+
       {userListings &&
         userListings.length > 0 &&
         userListings.map((listing) => (
@@ -264,7 +262,7 @@ export default function Profile() {
   );
 }
 
-//firebase rools
+//firebase sääntö koskien kuvia
 /* allow read;
       allow write:if
       request.resource.size < 2 * 1024 * 1024 &&
